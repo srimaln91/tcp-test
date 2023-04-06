@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    annotations: {}
+    labels:
+        app: test-tcp-app
+        app-id: 5a07ec8e-053a-44ba-bc70-2b307e4dba03
+        cluster-agent-id: f348cfd6-185b-4415-9eca-6af4482b438d
+        cluster-agent-name: minikube-agent
+        environment-id: f46188d5-b25b-4060-a27d-9e86ef134a63
+        environment-name: DEV
+        metadata-1: c2F1bG8udGVyY2Vpcm9AcmFuZG9saS5jYQ
+        organization-id: 798f5046-8a97-4bfa-87be-f26a570c3bb1
+        product: app-director
+    name: appdir-f348cfd6-test-tcp-app-dev-policy-ingress0
+    namespace: test
+spec:
+    rules:
+        - host: ""
+          http:
+            paths:
+                - backend:
+                    service:
+                        name: test-tcp-app-dev-service0
+                        port:
+                            number: 8080
+                  path: /
+                  pathType: ImplementationSpecific
+    tls: []
+status:
+    loadBalancer: {}

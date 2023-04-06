@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    annotations: {}
+    labels:
+        app: test-tcp-app
+        app-id: 5a07ec8e-053a-44ba-bc70-2b307e4dba03
+        cluster-agent-id: f348cfd6-185b-4415-9eca-6af4482b438d
+        cluster-agent-name: minikube-agent
+        environment-id: f46188d5-b25b-4060-a27d-9e86ef134a63
+        environment-name: DEV
+        metadata-1: c2F1bG8udGVyY2Vpcm9AcmFuZG9saS5jYQ
+        organization-id: 798f5046-8a97-4bfa-87be-f26a570c3bb1
+        product: app-director
+    name: appdir-f348cfd6-test-tcp-app-deployment-dev
+    namespace: test
+spec:
+    replicas: 2
+    revisionHistoryLimit: 1
+    selector:
+        matchLabels:
+            app-id: 5a07ec8e-053a-44ba-bc70-2b307e4dba03
+            cluster-agent-id: f348cfd6-185b-4415-9eca-6af4482b438d
+            environment-id: f46188d5-b25b-4060-a27d-9e86ef134a63
+            environment-name: DEV
+    strategy:
+        rollingUpdate:
+            maxSurge: 25%
+            maxUnavailable: 25%
+        type: RollingUpdate
+    template:
+        metadata:
+            annotations: {}
+            labels:
+                app: test-tcp-app
+                app-id: 5a07ec8e-053a-44ba-bc70-2b307e4dba03
+                cluster-agent-id: f348cfd6-185b-4415-9eca-6af4482b438d
+                cluster-agent-name: minikube-agent
+                environment-id: f46188d5-b25b-4060-a27d-9e86ef134a63
+                environment-name: DEV
+                metadata-1: c2F1bG8udGVyY2Vpcm9AcmFuZG9saS5jYQ
+                organization-id: 798f5046-8a97-4bfa-87be-f26a570c3bb1
+                product: app-director
+        spec:
+            containers:
+                - envFrom:
+                    - configMapRef:
+                        name: appdir-f348cfd6-test-tcp-app-configmap-dev
+                  image: docker.io/srimaln91/test-app:latest
+                  imagePullPolicy: Always
+                  name: appdir-f348cfd6-test-tcp-app
+                  ports:
+                    - containerPort: 8080
+                      protocol: TCP
+                  resources:
+                    limits:
+                        cpu: 100m
+                        memory: 256Mi
+                    requests:
+                        cpu: 100m
+                        memory: 256Mi
+                  securityContext:
+                    privileged: false
+                  terminationMessagePath: /dev/termination-log
+                  terminationMessagePolicy: File
+                  volumeMounts: []
+            dnsPolicy: ClusterFirst
+            restartPolicy: Always
+            schedulerName: default-scheduler
+            serviceAccountName: test-tcp-app-sa-dev
+            terminationGracePeriodSeconds: 30
+            volumes: []
+status: {}
